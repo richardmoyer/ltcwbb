@@ -1,0 +1,299 @@
+#+TITLE: Ltcwbb
+
+
+* Useful commands:
+jupyter-org-kill-block-and-results-and-ex
+
+* Chapter 3
+
+#+begin_src jupyter-python :session py
+import pandas as pd
+from os import path
+
+DATA_DIR = '/home/richm/projects/python/baseball/data'
+
+players = pd.read_csv(path.join(DATA_DIR, '2018-season','players.csv'))
+players = players.set_index('playerID')
+players.head
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<bound method NDFrame.head of                         name bats throws  height  weight  birthYear  \
+playerID
+abreujo02         Jose Abreu    R      R    75.0   255.0       1987
+acunaro01       Ronald Acuna    R      R    72.0   180.0       1997
+adamewi01       Willy Adames    R      R    72.0   200.0       1995
+adamsma01         Matt Adams    L      R    75.0   245.0       1988
+adducji02         Jim Adduci    L      L    74.0   210.0       1985
+...                      ...  ...    ...     ...     ...        ...
+workmbr01    Brandon Workman    R      R    77.0   235.0       1988
+wrighmi01        Mike Wright    R      R    78.0   215.0       1990
+wrighst01      Steven Wright    R      R    74.0   215.0       1984
+yarbrry01     Ryan Yarbrough    R      L    77.0   205.0       1991
+zimmejo02  Jordan Zimmermann    R      R    74.0   225.0       1986
+
+           birthMonth  birthDay      birthCity  birthState birthCountry  \
+playerID
+abreujo02           1        29     Cienfuegos  Cienfuegos         Cuba
+acunaro01          12        18      La Guaira      Vargas    Venezuela
+adamewi01           9         2       Santiago    Santiago         D.R.
+adamsma01           8        31    Philipsburg          PA          USA
+adducji02           5        15        Burnaby          BC          CAN
+...               ...       ...            ...         ...          ...
+workmbr01           8        13      Arlington          TX          USA
+wrighmi01           1         3  Bennettsville          SC          USA
+wrighst01           8        30       Torrance          CA          USA
+yarbrry01          12        31       Lakeland          FL          USA
+zimmejo02           5        23     Auburndale          WI          USA
+
+              debut
+playerID
+abreujo02  20140331
+acunaro01  20180425
+adamewi01  20180522
+adamsma01  20120520
+adducji02  20130901
+...             ...
+workmbr01  20130710
+wrighmi01  20150517
+wrighst01  20130423
+yarbrry01  20180331
+zimmejo02  20090420
+
+[825 rows x 12 columns]>
+#+end_example
+
+#+begin_src jupyter-python :session py :async no
+players.shape
+#+end_src
+
+#+RESULTS:
+| 825 | 12 |
+
+#+begin_src jupyter-python :session py
+players[['name', 'bats', 'throws','birthCountry']].head()
+#+end_src
+
+#+RESULTS:
+:                    name bats throws birthCountry
+: playerID
+: abreujo02    Jose Abreu    R      R         Cuba
+: acunaro01  Ronald Acuna    R      R    Venezuela
+: adamewi01  Willy Adames    R      R         D.R.
+: adamsma01    Matt Adams    L      R          USA
+: adducji02    Jim Adduci    L      L          CAN
+
+#+begin_src jupyter-python :session py
+players.columns
+#+end_src
+
+#+RESULTS:
+: Index(['name', 'bats', 'throws', 'height', 'weight', 'birthYear', 'birthMonth',
+:        'birthDay', 'birthCity', 'birthState', 'birthCountry', 'debut'],
+:       dtype='object')
+
+
+#+begin_src jupyter-python :session py
+players_cuba = players.loc[players['birthCountry'] == 'Cuba', ['name', 'height', 'weight', 'birthCountry']]
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py
+players_cuba.head()
+#+end_src
+
+#+RESULTS:
+:                       name  height  weight birthCountry
+: playerID
+: abreujo02       Jose Abreu    75.0   255.0         Cuba
+: alonsyo01    Yonder Alonso    73.0   230.0         Cuba
+: chapmar01  Aroldis Chapman    76.0   212.0         Cuba
+: diazal02      Aledmys Diaz    73.0   195.0         Cuba
+: gourryu01     Yuli Gurriel    72.0   190.0         Cuba
+
+
+#+begin_src jupyter-python :session py
+players_cuba['bats'] = players['bats']
+#+end_src
+
+#+RESULTS:
+
+#+RESULTS:
+:                       name  height  weight birthCountry bats
+: playerID
+: abreujo02       Jose Abreu    75.0   255.0         Cuba    R
+: alonsyo01    Yonder Alonso    73.0   230.0         Cuba    L
+: chapmar01  Aroldis Chapman    76.0   212.0         Cuba    L
+: diazal02      Aledmys Diaz    73.0   195.0         Cuba    R
+: gourryu01     Yuli Gurriel    72.0   190.0         Cuba    R
+
+
+** Part 2, page 57
+
+#+begin_src jupyter-python :session py
+pp = pd.read_csv(path.join(DATA_DIR, '100-game-sample', 'pitches.csv'))
+#+end_src
+
+#+RESULTS:
+
+#+RESULTS:
+#+begin_example
+             pitcher      batter  i  o  b  s pitch_type   mph  mph_max
+0           S.Romano     A.Eaton  1  0  0  0         FT  95.4    105.1
+1           S.Romano     A.Eaton  1  0  1  0         FT  95.0    105.1
+2           S.Romano     A.Eaton  1  0  1  1         FT  89.9    105.1
+3           S.Romano    A.Rendon  1  0  0  0         FT  95.2    105.1
+4           S.Romano    A.Rendon  1  0  0  1         FT  95.4    105.1
+...              ...         ... .. .. .. ..        ...   ...      ...
+29611  N.Syndergaard  D.Dietrich  9  1  3  1         SI  97.3    105.1
+29612  N.Syndergaard   P.O'Brien  9  2  0  0         CU  84.0    105.1
+29613  N.Syndergaard   P.O'Brien  9  2  0  1         SL  91.5    105.1
+29614  N.Syndergaard   P.O'Brien  9  2  1  1         SL  91.9    105.1
+29615  N.Syndergaard   P.O'Brien  9  2  2  1         SI  98.0    105.1
+
+[29616 rows x 9 columns]
+#+end_example
+
+3 main column types: number, string, boolean
+figure out spin rate:
+#+begin_src jupyter-python :session py
+import numpy as np
+
+pp['distance_from_middle_of_plate'] = np.abs(pp['x0'])
+
+pp['ln_spin_rate'] = np.log(pp['spin_rate'])
+
+pp.head()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+        ab_id   pitcher    batter  i  b  s  o pitch_type   mph type  ...  \
+0  2018003856  S.Romano   A.Eaton  1  0  0  0         FT  95.4    B  ...
+1  2018003856  S.Romano   A.Eaton  1  1  0  0         FT  95.0    S  ...
+2  2018003856  S.Romano   A.Eaton  1  1  1  0         FT  89.9    X  ...
+3  2018003857  S.Romano  A.Rendon  1  0  0  0         FT  95.2    S  ...
+4  2018003857  S.Romano  A.Rendon  1  0  1  0         FT  95.4    S  ...
+
+  end_speed       g_id  b_score  pitcher_team  on_1b  on_2b  on_3b  \
+0      87.2  201800050        0           CIN    0.0    0.0    0.0
+1      86.7  201800050        0           CIN    0.0    0.0    0.0
+2      82.8  201800050        0           CIN    0.0    0.0    0.0
+3      86.0  201800050        0           CIN    1.0    0.0    0.0
+4      86.3  201800050        0           CIN    1.0    0.0    0.0
+
+   b_score_after_pitch  distance_from_middle_of_plate  ln_spin_rate
+0                    0                       1.628619      7.963906
+1                    0                       1.576306      7.929526
+2                    0                       1.837934      7.745107
+3                    0                       2.086613      7.947225
+4                    0                       1.923722      8.006044
+
+[5 rows x 31 columns]
+#+end_example
+
+#+begin_src jupyter-python :session py
+pp['season'] = 2018
+
+pp[['pitcher','batter','i', 'o','b','s','pitch_type','mph','season']].sample(5)
+#+end_src
+
+#+RESULTS:
+:            pitcher      batter  i  o  b  s pitch_type   mph  season
+: 22997     A.Suarez      R.Odor  6  1  1  2         FF  93.0    2018
+: 9017   R.Yarbrough     M.Canha  4  1  1  1         CH  81.3    2018
+: 3104        C.Sale    C.Gentry  3  2  1  0         FF  87.5    2018
+: 21240     D.Hudson   Y.Grandal  6  1  1  1         SI  97.3    2018
+: 28494     K.Gibson  M.Davidson  1  2  1  0         FF  95.7    2018
+
+#+begin_src jupyter-python :session py
+(pp['pitcher'] + ' throws a ' + pp['pitch_type'] + ' to ' + pp['batter']).sample(5)
+#+end_src
+
+#+RESULTS:
+: 15235     J.deGrom throws a CH to C.Santana
+: 14630        K.Maeda throws a SL to M.Trout
+: 24381       D.Bundy throws a FF to H.Dozier
+: 13843    C.Rusin throws a FC to R.Stripling
+: 9480       J.Lyles throws a SL to D.Swanson
+: dtype: object
+
+#+begin_src jupyter-python :session py :async yes
+def is_fastball(pitch):
+    """
+    takes some string named pitch and checks whether it's a fastball
+    (cutter, four seam, two seam, sinker, splitter)
+    """
+    return pitch in ['FC','FF','FS','FT','SI']
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py  :async yes
+pp['is_fastball'] = pp['pitch_type'].apply(is_fastball)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py :async yes
+pp[['pitcher', 'is_fastball','pitch_type','mph']].sample(5)
+#+end_src
+
+#+RESULTS:
+:              pitcher  is_fastball pitch_type   mph
+: 23263  N.Syndergaard        False         SL  91.0
+: 7538    J.De La Rosa         True         FF  92.8
+: 9965     R.Yarbrough         True         SI  90.5
+: 825         P.Moylan         True         SI  87.7
+: 15487       M.Tanaka        False         SL  81.6
+
+alternate lambda function
+
+#+begin_src jupyter-python :session py :async yes
+pp['is_fastball_alternate'] = pp['pitch_type'].apply(
+    lambda x: x in ['FC','FF','FS','FT','SI'])
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py :async yes
+pp.drop('is_fastball_alternate', axis=1, inplace=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py :async yes
+pp.columns = [x.lower() for x in pp.columns]
+
+pp.head()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+        ab_id   pitcher    batter  i  b  s  o pitch_type   mph type  ...  \
+0  2018003856  S.Romano   A.Eaton  1  0  0  0         FT  95.4    B  ...
+1  2018003856  S.Romano   A.Eaton  1  1  0  0         FT  95.0    S  ...
+2  2018003856  S.Romano   A.Eaton  1  1  1  0         FT  89.9    X  ...
+3  2018003857  S.Romano  A.Rendon  1  0  0  0         FT  95.2    S  ...
+4  2018003857  S.Romano  A.Rendon  1  0  1  0         FT  95.4    S  ...
+
+  b_score  pitcher_team  on_1b  on_2b  on_3b  b_score_after_pitch  \
+0       0           CIN    0.0    0.0    0.0                    0
+1       0           CIN    0.0    0.0    0.0                    0
+2       0           CIN    0.0    0.0    0.0                    0
+3       0           CIN    1.0    0.0    0.0                    0
+4       0           CIN    1.0    0.0    0.0                    0
+
+   distance_from_middle_of_plate  ln_spin_rate  season  is_fastball
+0                       1.628619      7.963906    2018         True
+1                       1.576306      7.929526    2018         True
+2                       1.837934      7.745107    2018         True
+3                       2.086613      7.947225    2018         True
+4                       1.923722      8.006044    2018         True
+
+[5 rows x 33 columns]
+#+end_example
+
+page 65
