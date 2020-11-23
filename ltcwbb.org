@@ -297,3 +297,10 @@ pp.head()
 #+end_example
 
 page 65
+
+
+#+begin_src jupyter-python :session py :async yes
+players = pd.read_csv(path.join(DATA_DIR, '2018-season', 'players.csv'))
+#+end_src
+
+#+RESULTS:
