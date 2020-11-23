@@ -571,3 +571,49 @@ pp['fast_4seam'].sum()
 
 #+RESULTS:
 : 6
+
+#+begin_src jupyter-python :session py :async yes
+pp['pitch_type'].value_counts(normalize=True)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+FF    0.360000
+SL    0.174771
+CH    0.104618
+FT    0.101460
+CU    0.085059
+SI    0.078268
+FC    0.060000
+KC    0.022003
+FS    0.012835
+EP    0.000509
+PO    0.000374
+FO    0.000102
+Name: pitch_type, dtype: float64
+#+end_example
+
+#+begin_src jupyter-python :session py :async yes
+pd.crosstab(pp['i'], pp['pitch_type']).head(9)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+pitch_type   CH   CU  EP   FC    FF  FO  FS   FT  KC  PO   SI   SL
+i
+1           332  269   0  200  1431   0  38  451  76   0  209  473
+2           348  319   0  171  1191   0  37  373  84   0  205  500
+3           423  324   1  206  1115   0  28  363  76   4  178  545
+4           425  285   4  200  1067   0  33  414  89   1  156  549
+5           406  320   6  202  1046   0  40  366  67   2  229  570
+6           346  297   3  148  1129   0  44  344  68   0  294  697
+7           282  219   1  205  1153   3  76  214  56   2  444  669
+8           274  275   0  211  1313   0  51  234  56   0  261  650
+9           223  136   0  204  1009   0  31  171  74   2  244  406
+#+end_example
+
+*Page 77*
+
+#+begin_src jupyter-python :session py :async yes
+
+#+end_src
