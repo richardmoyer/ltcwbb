@@ -201,23 +201,23 @@ pp[['pitcher','batter','i', 'o','b','s','pitch_type','mph','season']].sample(5)
 #+end_src
 
 #+RESULTS:
-:            pitcher      batter  i  o  b  s pitch_type   mph  season
-: 22997     A.Suarez      R.Odor  6  1  1  2         FF  93.0    2018
-: 9017   R.Yarbrough     M.Canha  4  1  1  1         CH  81.3    2018
-: 3104        C.Sale    C.Gentry  3  2  1  0         FF  87.5    2018
-: 21240     D.Hudson   Y.Grandal  6  1  1  1         SI  97.3    2018
-: 28494     K.Gibson  M.Davidson  1  2  1  0         FF  95.7    2018
+:           pitcher     batter  i  o  b  s pitch_type   mph  season
+: 17241      J.Gant     D.Bote  2  2  1  1         CH  82.6    2018
+: 14198    A.Colome    J.Upton  8  2  1  0         FF  93.4    2018
+: 19909     R.Lopez  M.Mahtook  4  2  0  0         FF  96.1    2018
+: 29226  C.Stratton   D.Freese  4  0  2  0         FF  90.9    2018
+: 29038     C.Allen  B.Goodwin  7  0  2  1         FF  91.5    2018
 
 #+begin_src jupyter-python :session py
 (pp['pitcher'] + ' throws a ' + pp['pitch_type'] + ' to ' + pp['batter']).sample(5)
 #+end_src
 
 #+RESULTS:
-: 15235     J.deGrom throws a CH to C.Santana
-: 14630        K.Maeda throws a SL to M.Trout
-: 24381       D.Bundy throws a FF to H.Dozier
-: 13843    C.Rusin throws a FC to R.Stripling
-: 9480       J.Lyles throws a SL to D.Swanson
+: 28749      T.Vieira throws a FF to C.Gimenez
+: 9172       J.Shields throws a FF to C.Yelich
+: 13155    J.Lucchesi throws a SI to A.Meadows
+: 10192       M.Harvey throws a FT to L.Weaver
+: 28200     N.Rumbelow throws a CH to J.Lowrie
 : dtype: object
 
 #+begin_src jupyter-python :session py :async yes
@@ -242,12 +242,12 @@ pp[['pitcher', 'is_fastball','pitch_type','mph']].sample(5)
 #+end_src
 
 #+RESULTS:
-:              pitcher  is_fastball pitch_type   mph
-: 23263  N.Syndergaard        False         SL  91.0
-: 7538    J.De La Rosa         True         FF  92.8
-: 9965     R.Yarbrough         True         SI  90.5
-: 825         P.Moylan         True         SI  87.7
-: 15487       M.Tanaka        False         SL  81.6
+:            pitcher  is_fastball pitch_type   mph
+: 909    V.Velasquez         True         FT  89.4
+: 6253    C.Buchholz         True         FF  91.5
+: 13094      S.Dyson         True         FT  90.7
+: 7566   T.McFarland         True         SI  91.8
+: 17395  K.Hendricks         True         SI  86.5
 
 alternate lambda function
 
@@ -304,3 +304,270 @@ players = pd.read_csv(path.join(DATA_DIR, '2018-season', 'players.csv'))
 #+end_src
 
 #+RESULTS:
+
+#+RESULTS:
+#+begin_example
+0    False
+1    False
+2    False
+3    False
+4    False
+5    False
+6    False
+7    False
+8     True
+9    False
+Name: birthState, dtype: bool
+#+end_example
+
+
+#+begin_src jupyter-python :session py :async yes
+players[['name', 'birthCity', 'birthState', 'birthCountry']].head(10)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_src jupyter-python :session py :async yes
+players['birthState'].notnull().head(10)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+0     True
+1     True
+2     True
+3     True
+4     True
+5     True
+6     True
+7     True
+8    False
+9     True
+Name: birthState, dtype: bool
+#+end_example
+
+#+begin_example
+              name    birthCity  birthState birthCountry
+0       Jose Abreu   Cienfuegos  Cienfuegos         Cuba
+1     Ronald Acuna    La Guaira      Vargas    Venezuela
+2     Willy Adames     Santiago    Santiago         D.R.
+3       Matt Adams  Philipsburg          PA          USA
+4       Jim Adduci      Burnaby          BC          CAN
+5   Ehire Adrianza     Guarenas     Miranda    Venezuela
+6    Jesus Aguilar      Maracay      Aragua    Venezuela
+7       Nick Ahmed  Springfield          MA          USA
+8     Ozzie Albies   Willemstad         NaN      Curacao
+9  Scott Alexander   Santa Rosa          CA          USA
+#+end_example
+:END:
+#+RESULTS:
+#+begin_example
+0     True
+1     True
+2     True
+3     True
+4     True
+5     True
+6     True
+7     True
+8    False
+9     True
+Name: birthState, dtype: bool
+#+end_example
+#+begin_src jupyter-python :session py :async yes
+players['birthState'].fillna('Country has no states').head(10)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+0               Cienfuegos
+1                   Vargas
+2                 Santiago
+3                       PA
+4                       BC
+5                  Miranda
+6                   Aragua
+7                       MA
+8    Country has no states
+9                       CA
+Name: birthState, dtype: object
+#+end_example
+
+#+begin_src jupyter-python :session py :async yes
+players.dtypes.head()
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_src jupyter-python :session py :async y
+atbats = pd.read_csv(path.join(DATA_DIR, '2018-season','atbats.csv'))
+atbats.mean()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+year     2018.000000
+stint       1.028409
+G          98.515152
+AB        275.797348
+R          37.092803
+H          70.223485
+2B         14.202652
+3B          1.458333
+HR          9.717803
+RBI        35.403409
+SB          4.297348
+CS          1.674242
+BB         26.863636
+SO         65.632576
+IBB         1.693182
+HBP         3.335227
+SH          0.704545
+SF          2.109848
+GIDP        5.789773
+dtype: float64
+#+end_example
+
+: name       object
+: bats       object
+: throws     object
+: height    float64
+: weight    float64
+: dtype: object
+:END:
+#+RESULTS:
+#+begin_example
+year     2018.000000
+stint       1.028409
+G          98.515152
+AB        275.797348
+R          37.092803
+H          70.223485
+2B         14.202652
+3B          1.458333
+HR          9.717803
+RBI        35.403409
+SB          4.297348
+CS          1.674242
+BB         26.863636
+SO         65.632576
+IBB         1.693182
+HBP         3.335227
+SH          0.704545
+SF          2.109848
+GIDP        5.789773
+dtype: float64
+#+end_example
+
+#+begin_src jupyter-python :session py :async yes
+atbats.max()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+name        Zack Cozart
+year               2018
+stint                 2
+team                WAS
+lg                   NL
+G                   162
+AB                  664
+R                   129
+H                   192
+2B                   51
+3B                   12
+HR                   48
+RBI                 130
+SB                   45
+CS                   14
+BB                  130
+SO                  217
+IBB                  25
+HBP                  22
+SH                   12
+SF                   11
+GIDP                 23
+playerID      zuninmi01
+dtype: object
+#+end_example
+
+#+begin_src jupyter-python :session py :async yes
+atbats.min()
+#+end_src
+
+#+RESULTS:
+#+begin_example
+name        A. J. Ellis
+year               2018
+stint                 1
+team                ARI
+lg                   AL
+G                    50
+AB                    0
+R                     0
+H                     0
+2B                    0
+3B                    0
+HR                    0
+RBI                   0
+SB                    0
+CS                    0
+BB                    0
+SO                    0
+IBB                   0
+HBP                   0
+SH                    0
+SF                    0
+GIDP                  0
+playerID      abreujo02
+dtype: object
+#+end_example
+
+
+#+begin_src jupyter-python :session py :async yes
+atbats['1B'] = (atbats['H'] - atbats[['2B','3B','HR']].sum(axis=1))
+atbats[['name', '1B']].sample(5)
+#+end_src
+
+#+RESULTS:
+:                name   1B
+: 84      Curt Casali   27
+: 440     Jean Segura  136
+: 159    Adam Frazier   53
+: 445        JB Shuck   21
+: 127  Derek Dietrich   88
+
+#+begin_src jupyter-python :session py :async yes
+pp = pd.read_csv(path.join(DATA_DIR, '100-game-sample', 'pitches.csv'))
+pp.dtypes.head()
+#+end_src
+
+#+RESULTS:
+: ab_id       int64
+: pitcher    object
+: batter     object
+: i           int64
+: b           int64
+: dtype: object
+
+
+#+begin_src jupyter-python :session py :async yes
+pp['fast_4seam'] = (pp['pitch_type'] == 'FF') & (pp['mph'] >= 100)
+pp['fast_4seam'].mean()
+pp['fast_4seam'].sum()
+#+end_src
+
+#+RESULTS:
+: 20
+#+begin_src jupyter-python :session py :async yes
+(pp['mph'] > 104).any()
+#+end_src
+
+#+RESULTS:
+: True
+#+begin_src jupyter-python :session py :async yes
+(atbats[['H', 'SO']] > 150).all(axis=1).sum()
+#+end_src
+
+#+RESULTS:
+: 6
