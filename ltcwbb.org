@@ -612,8 +612,69 @@ i
 9           223  136   0  204  1009   0  31  171  74   2  244  406
 #+end_example
 
-*Page 77*
+*Page 80*
 
 #+begin_src jupyter-python :session py :async yes
-
+games = pd.read_csv(path.join(DATA_DIR, '100-game-sample', 'games.csv'))
 #+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py :async yes
+first_game_id = 201800050
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :session py :async yes
+games.loc[mil]
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+#+begin_example
+
+KeyErrorTraceback (most recent call last)
+<ipython-input-151-34a2c993c9ea> in <module>
+----> 1 games.loc[random_games]
+
+~/.local/lib/python3.8/site-packages/pandas/core/indexing.py in __getitem__(self, key)
+    877
+    878             maybe_callable = com.apply_if_callable(key, self.obj)
+--> 879             return self._getitem_axis(maybe_callable, axis=axis)
+    880
+    881     def _is_scalar_access(self, key: Tuple):
+
+~/.local/lib/python3.8/site-packages/pandas/core/indexing.py in _getitem_axis(self, key, axis)
+   1097                     raise ValueError("Cannot index with multidimensional key")
+   1098
+-> 1099                 return self._getitem_iterable(key, axis=axis)
+   1100
+   1101             # nested tuple slicing
+
+~/.local/lib/python3.8/site-packages/pandas/core/indexing.py in _getitem_iterable(self, key, axis)
+   1035
+   1036         # A collection of keys
+-> 1037         keyarr, indexer = self._get_listlike_indexer(key, axis, raise_missing=False)
+   1038         return self.obj._reindex_with_indexers(
+   1039             {axis: [keyarr, indexer]}, copy=True, allow_dups=True
+
+~/.local/lib/python3.8/site-packages/pandas/core/indexing.py in _get_listlike_indexer(self, key, axis, raise_missing)
+   1252             keyarr, indexer, new_indexer = ax._reindex_non_unique(keyarr)
+   1253
+-> 1254         self._validate_read_indexer(keyarr, indexer, axis, raise_missing=raise_missing)
+   1255         return keyarr, indexer
+   1256
+
+~/.local/lib/python3.8/site-packages/pandas/core/indexing.py in _validate_read_indexer(self, key, indexer, axis, raise_missing)
+   1296             if missing == len(indexer):
+   1297                 axis_name = self.obj._get_axis_name(axis)
+-> 1298                 raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+   1299
+   1300             # We (temporarily) allow for some missing keys with .loc, except in
+
+KeyError: "None of [Int64Index([201800050, 201801909, 201800465], dtype='int64')] are in the [index]"
+#+end_example
+:END:
+201800050
